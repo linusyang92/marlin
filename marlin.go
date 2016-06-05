@@ -1,101 +1,101 @@
 package main
 
 import (
-  "bytes"
-  "compress/gzip"
-  "crypto/md5"
-  "fmt"
-  "io"
-  "io/ioutil"
-  "os"
-  "path"
-  "strconv"
-  "strings"
+	"bytes"
+	"compress/gzip"
+	"crypto/md5"
+	"fmt"
+	"io"
+	"io/ioutil"
+	"os"
+	"path"
+	"strconv"
+	"strings"
 )
 
 func check(e error) {
-  if e != nil {
-    panic(e)
-  }
+	if e != nil {
+		panic(e)
+	}
 }
 
 func getPackageList() string {
-  var retVal string
+	var retVal string
 
-  files, err := ioutil.ReadDir("./debs")
-  if err != nil {
-    panic(err)
-  }
+	files, err := ioutil.ReadDir("./debs")
+	if err != nil {
+		panic(err)
+	}
 
-  for _, file := range files {
-    if !strings.HasSuffix(file.Name(), "deb") {
-      continue
-    }
-    filePath := path.Join("./debs", file.Name())
-    fileReader, err := os.Open(filePath)
-    if err != nil {
-      panic(err)
-    }
-    defer fileReader.Close()
+	for _, file := range files {
+		if !strings.HasSuffix(file.Name(), "deb") {
+			continue
+		}
+		filePath := path.Join("./debs", file.Name())
+		fileReader, err := os.Open(filePath)
+		if err != nil {
+			panic(err)
+		}
+		defer fileReader.Close()
 
-    control, err := readDebControlFile(fileReader)
-    if err != nil {
-      panic(err)
-    }
+		control, err := readDebControlFile(fileReader)
+		if err != nil {
+			panic(err)
+		}
 
-    // Size
-    control += "Size: "
-    control += strconv.FormatInt(file.Size(), 10)
-    control += "\n"
+		// Size
+		control += "Size: "
+		control += strconv.FormatInt(file.Size(), 10)
+		control += "\n"
 
-    // MD5Sum
-    fileReader.Seek(0, 0)
-    hash := md5.New()
-    _, err = io.Copy(hash, fileReader)
-    if err != nil {
-      panic(err)
-    }
+		// MD5Sum
+		fileReader.Seek(0, 0)
+		hash := md5.New()
+		_, err = io.Copy(hash, fileReader)
+		if err != nil {
+			panic(err)
+		}
 
-    sum := fmt.Sprintf("%x", hash.Sum(nil))
+		sum := fmt.Sprintf("%x", hash.Sum(nil))
 
-    control += "MD5sum: "
-    control += sum
-    control += "\n"
+		control += "MD5sum: "
+		control += sum
+		control += "\n"
 
-    control += "Filename: "
-    control += "./debs/" + file.Name()
-    control += "\n"
+		control += "Filename: "
+		control += "./debs/" + file.Name()
+		control += "\n"
 
-    retVal += control + "\n"
-  }
+		retVal += control + "\n"
+	}
 
-  return retVal
+	return retVal
 }
 
 func getGzippedPackageList() []byte {
-  var b bytes.Buffer
+	var b bytes.Buffer
 
-  gz := gzip.NewWriter(&b)
-  defer gz.Close()
+	gz := gzip.NewWriter(&b)
+	defer gz.Close()
 
-  _, err := gz.Write([]byte(getPackageList()))
-  if err != nil {
-    panic(err)
-  }
+	_, err := gz.Write([]byte(getPackageList()))
+	if err != nil {
+		panic(err)
+	}
 
-  err = gz.Close()
-  if err != nil {
-    panic(err)
-  }
+	err = gz.Close()
+	if err != nil {
+		panic(err)
+	}
 
-  return b.Bytes()
+	return b.Bytes()
 
 }
 
 func main() {
 
-  d1 := []byte(getGzippedPackageList())
-  err := ioutil.WriteFile("Packages.gz", d1, 0644)
-  check(err)
+	d1 := []byte(getGzippedPackageList())
+	err := ioutil.WriteFile("Packages.gz", d1, 0644)
+	check(err)
 
 }
