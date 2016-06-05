@@ -1,7 +1,13 @@
 #marlin
 Marlin provides an easy way to generate a `Packages.gz` file for your Cydia/apt repository. 
 
-This package runs on Mac, Linux, and Windows (dpkg and Cygwin not needed).
+This package runs on Mac, Linux, and Windows.
+
+##Advantages over `dpkg-scanpackages`
+- No need to install `dpkg`, `perl`, or any other utility that you don't really need
+- Standalone binary, no dependancies
+- Cross platform compatibility
+- very fast
 
 ##Installing
 Golang must be installed correctly on your computer in order to compile Marlin correctly.
