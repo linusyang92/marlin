@@ -1,24 +1,21 @@
-#Caca
+#marlin
+Marlin provides an easy way to generate a `Packages.gz` file for your Cydia/apt repository. 
 
-this package, written in go, provides an easy way to generate a `Packages.gz` file to host a Cydia/APT repository
-
-caca can run on windows, mac, and linux.
+This package runs on Mac, Linux, and Windows (dpkg and Cygwin not needed).
 
 ##Installing
-
-you must have golang installed on your system, with the GOPATH and GOROOT set in your environment
+Golang must be installed correctly on your computer in order to compile Marlin correctly.
 
     go get github.com/blakesmith/ar
-    git clone https://github.com/cmelone/caca.git
+    git clone https://github.com/cmelone/marlin.git
+    cd marlin
+    go build
 
-once you are in the folder you can run `go build`. This will generate a binary named `caca`.
+This will create a binary named marlin in the current folder. Add your deb files to a folder named `debs` (you can configure this in `marlin.go`). Finally, run `marlin` and a `Packages.gz` file will be generated.
 
-Create a folder named `debs` in the directory, and place as many deb files as you need.
+##TODO:
+- Better error handling
+- Ability to create a Release file
+- Compile marlin for Windows, Mac, and Linux (and every architecture)
 
-after that, run the binary and a packages.gz file will be generated very quickly
-
-##to do:
-
-better error handling
-
-###based on [openrepo](//github.com/eswick/openrepo) by @eswick
+marlin takes most of its code from Evan Swick's [openrepo](//github.com/eswick/openrepo)
