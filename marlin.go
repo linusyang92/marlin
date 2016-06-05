@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"os"
 	"path"
 	"strconv"
@@ -18,15 +19,30 @@ func check(e error) {
 		panic(e)
 	}
 }
+func IsEmptyDir(name string) (bool, error) {
+	entries, err := ioutil.ReadDir(name)
+	if err != nil {
+		return false, err
+	}
+	return len(entries) == 0, nil
+}
 
 func getPackageList() string {
 	var retVal string
 
 	files, err := ioutil.ReadDir("./debs")
 	if err != nil {
-		panic(err)
+		fmt.Println("Couldn't find debs folder\n")
+		//panic(err)
 	}
-
+	//check if debs folder is empty
+	empty, err := IsEmptyDir("./debs")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	if empty {
+		fmt.Printf("debs folder is empty\n")
+	}
 	for _, file := range files {
 		if !strings.HasSuffix(file.Name(), "deb") {
 			continue

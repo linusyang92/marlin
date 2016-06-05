@@ -1,0 +1,10 @@
+title: Caetano's Cydia Repo
+website: melone.co
+url: https://cmelone.github.io/depot
+twitter_username: caetanomelone
+github_username:  cmelone
+include: ['depictions']
+markdown: kramdown
+sass:
+  sass_dir: _assets
+  style: compressed
