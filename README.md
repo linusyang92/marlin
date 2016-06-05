@@ -7,6 +7,7 @@ This package runs on Mac, Linux, and Windows.
 - No need to install `dpkg`, `perl`, or any other utility that you don't really need
 - Standalone binary, no dependancies
 - Cross platform compatibility
+- automatically gzips `Packages` file
 - very fast
 
 ##Installing
