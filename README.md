@@ -11,7 +11,7 @@ This package runs on Mac, Linux, and Windows.
 - very fast
 
 ##Installing
-- grab a copy of marlin for your correct OS and architecture on the [releases](./releases) page
+- grab a copy of marlin for your correct OS and architecture on the [releases](//github.com/cmelone/marlin/releases) page
 - run marlin from the current directory (`./marlin`) because it is most likely not in your `$PATH`
 
 ##Compiling
