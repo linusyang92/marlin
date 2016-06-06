@@ -11,6 +11,10 @@ This package runs on Mac, Linux, and Windows.
 - very fast
 
 ##Installing
+- grab a copy of marlin for your correct OS and architecture on the [releases](./releases) page
+- run marlin from the current directory (`./marlin`) because it is most likely not in your `$PATH`
+
+##Compiling
 Golang must be installed correctly on your computer in order to compile Marlin correctly.
 
     go get github.com/blakesmith/ar
