@@ -26,6 +26,6 @@ This will create a binary named marlin in the current folder. Add your deb files
 ##TODO:
 - Better error handling
 - Ability to create a Release file
-- Compile marlin for Windows, Mac, and Linux (and every architecture)
+- ~Compile marlin for Windows, Mac, and Linux (and every architecture)~
 
 marlin takes most of its code from Evan Swick's [openrepo](//github.com/eswick/openrepo)
