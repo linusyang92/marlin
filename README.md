@@ -29,4 +29,4 @@ This will create a binary named marlin in the current folder. Add your deb files
 - ~~Compile marlin for Windows, Mac, and Linux (and every architecture)~~
 
 ##Special Thanks
-- Evan Swick for creating [OpenRepo](//github.com/eswick/operepo), the inspiration for marlin.
+- Evan Swick for creating [OpenRepo](//github.com/eswick/openrepo), the inspiration for marlin.
