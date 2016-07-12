@@ -1,3 +1,10 @@
+/*
+	marlin - marlin.go
+	Caetano Melone
+	Jun 2016
+	MIT License
+*/
+
 package main
 
 import (
