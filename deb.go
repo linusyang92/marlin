@@ -1,6 +1,6 @@
 /*
 	marlin - deb.go
-	Caetano Melone
+	ipgof
 	Jun 2016
 	MIT License
 */
