@@ -9,7 +9,6 @@ package main
 
 import (
 	"bytes"
-	"compress/gzip"
 	"crypto/md5"
 	"fmt"
 	"io"
@@ -19,6 +18,8 @@ import (
 	"path"
 	"strconv"
 	"strings"
+
+	"github.com/dsnet/compress/bzip2"
 )
 
 func check(e error) {
@@ -37,13 +38,13 @@ func IsEmptyDir(name string) (bool, error) {
 func getPackageList() string {
 	var retVal string
 
-	files, err := ioutil.ReadDir("./debs")
+	files, err := ioutil.ReadDir("debs")
 	if err != nil {
 		fmt.Println("Couldn't find debs folder\n")
 		//panic(err)
 	}
 	//check if debs folder is empty
-	empty, err := IsEmptyDir("./debs")
+	empty, err := IsEmptyDir("debs")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -54,7 +55,7 @@ func getPackageList() string {
 		if !strings.HasSuffix(file.Name(), "deb") {
 			continue
 		}
-		filePath := path.Join("./debs", file.Name())
+		filePath := path.Join("debs", file.Name())
 		fileReader, err := os.Open(filePath)
 		if err != nil {
 			panic(err)
@@ -95,13 +96,16 @@ func getPackageList() string {
 	return retVal
 }
 
-func getGzippedPackageList() []byte {
+func getGzippedPackageList() ([]byte, []byte) {
 	var b bytes.Buffer
 
-	gz := gzip.NewWriter(&b)
+	gz, err := bzip2.NewWriter(&b, nil)
+	if err != nil {
+		panic(err)
+	}
 	defer gz.Close()
-
-	_, err := gz.Write([]byte(getPackageList()))
+	orig := []byte(getPackageList())
+	_, err = gz.Write(orig)
 	if err != nil {
 		panic(err)
 	}
@@ -111,14 +115,14 @@ func getGzippedPackageList() []byte {
 		panic(err)
 	}
 
-	return b.Bytes()
+	return b.Bytes(), orig
 
 }
 
 func main() {
-
-	d1 := []byte(getGzippedPackageList())
-	err := ioutil.WriteFile("Packages.gz", d1, 0644)
+	d1, d2 := getGzippedPackageList()
+	err := ioutil.WriteFile("Packages.bz2", d1, 0644)
 	check(err)
-
+	err = ioutil.WriteFile("Packages", d2, 0644)
+	check(err)
 }
