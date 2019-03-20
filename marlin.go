@@ -62,9 +62,25 @@ func getPackageList() string {
 		}
 		defer fileReader.Close()
 
-		control, err := readDebControlFile(fileReader)
+		ctrl, err := readDebControlFile(fileReader)
 		if err != nil {
 			panic(err)
+		}
+		ctrlb := make([]byte, 0, len(ctrl))
+		for j := 0; j < len(ctrl); {
+			if ctrl[j] == '\n' || ctrl[j] == '\r' {
+				ctrlb = append(ctrlb, '\n')
+				for j < len(ctrl) && (ctrl[j] == '\n' || ctrl[j] == '\r') {
+					j++
+				}
+			} else {
+				ctrlb = append(ctrlb, ctrl[j])
+				j++
+			}
+		}
+		control := string(ctrlb)
+		if len(control) > 0 && control[len(control) - 1] != '\n' {
+			control += "\n"
 		}
 
 		// Size
